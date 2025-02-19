@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap');
+
+.tetris-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background-color: #45a049;
+}
+
+.score {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.score-board {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5em;
+  color: #ff0000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.board {
+  border: 3px solid #2d4263;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tetromino colors */
+.cyan { background-color: #00f0f0; }
+.yellow { background-color: #f0f000; }
+.purple { background-color: #a000f0; }
+.green { background-color: #00f000; }
+.red { background-color: #f00000; }
+.blue { background-color: #0000f0; }
+.orange { background-color: #f0a000; }
+
+.tetris-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  font-family: 'Orbitron', 'Arial Rounded MT Bold', sans-serif;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 2rem;
+  align-items: start;
+  padding: 2rem;
+}
+
+/* 分數面板美化 */
+.score-board {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.score-card {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  text-align: center;
+}
+
+.score-label {
+  display: block;
+  color: #00f0f0;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.score-value {
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* 按鈕美化 */
+.neon-button {
+  background: none;
+  border: 2px solid #00f0f0;
+  color: #00f0f0;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.neon-button:hover {
+  background: rgba(0, 240, 240, 0.1);
+  box-shadow: 0 0 15px rgba(0, 240, 240, 0.5);
+  transform: translateY(-2px);
+}
+
+/* 遊戲區域美化 */
+.board-container {
+  grid-column: 2;
+  position: relative;
+}
+
+.board-frame {
+  background: linear-gradient(145deg, #0a0a1a, #1a1a2e);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 240, 240, 0.2);
+}
+
+/* 添加網格線動態效果 */
+.board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(rgba(0, 240, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 240, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  animation: gridFlow 60s linear infinite;
+  z-index: 0;
+}
+
+@keyframes gridFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+/* 調整方塊陰影 */
+.cell[style*="background-color"] {
+  box-shadow:
+    inset 0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 5px rgba(0, 240, 240, 0.3);
+}
+
+/* 方塊顏色增強 */
+.cyan { background: #00f0f0; box-shadow: inset 0 0 10px rgba(0, 240, 240, 0.5); }
+.yellow { background: #ffd700; box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5); }
+.purple { background: #9b30ff; box-shadow: inset 0 0 10px rgba(155, 48, 255, 0.5); }
+.green { background: #00ff7f; box-shadow: inset 0 0 10px rgba(0, 255, 127, 0.5); }
+.red { background: #ff4040; box-shadow: inset 0 0 10px rgba(255, 64, 64, 0.5); }
+.blue { background: #4169e1; box-shadow: inset 0 0 10px rgba(65, 105, 225, 0.5); }
+.orange { background: #ffa500; box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.5); }
+
+/* 遊戲結束提示美化 */
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.5em;
+  color: #ff4040;
+  text-shadow: 0 0 20px rgba(255, 64, 64, 0.8);
+  text-align: center;
+  animation: pulse 1.5s infinite;
+  z-index: 2;
+  font-family: 'Orbitron', sans-serif;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 控制提示美化 */
+.controls-tip {
+  grid-column: 3;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.control-item {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+kbd {
+  background: #2d4263;
+  color: #00f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  border: 1px solid #00f0f0;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 新增AI按鈕樣式 */
+.ai-button {
+  background: rgba(0, 240, 240, 0.3);
+  border: 2px solid #00f0f0;
+  color: #fff;
+  padding: 10px 20px;
+  margin-top: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ai-button.active {
+  background: rgba(0, 240, 240, 0.7);
+  box-shadow: 0 0 15px rgba(0, 240, 240, 0.5);
+}
+
+/* 暫停按鈕樣式 */
+.pause-button {
+  background: rgba(255, 165, 0, 0.3);
+  border: 2px solid #ffa500;
+  margin-top: 1rem;
+}
+
+.pause-button:hover {
+  background: rgba(255, 165, 0, 0.5);
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
+}
+
+.pause-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
